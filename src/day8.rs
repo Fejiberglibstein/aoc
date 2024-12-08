@@ -50,7 +50,7 @@ pub fn part1(input: &str) -> usize {
 
 pub fn part2(input: &str) -> usize {
     let mut map: HashMap<char, Vec<(i64, i64)>> = HashMap::new();
-    let grid = input
+    let mut grid = input
         .lines()
         .map(|v| v.chars().collect::<Vec<_>>())
         .collect::<Vec<_>>();
@@ -83,17 +83,19 @@ pub fn part2(input: &str) -> usize {
                     }
 
                     let offset = (a.0 - b.0, a.1 - b.1);
-                    let new_pt = (a.0 + offset.0, a.1 + offset.1);
-                    let vec = vec![a, new_pt];
-                    while ((0..width).contains(&(new_pt.0 as usize))
-                        && (0..height).contains(&(new_pt.1 as usize)))
+                    let mut new_pt = (a.0 + offset.0, a.1 + offset.1);
+                    let mut vec = vec![*a];
+
+                    while (0..width).contains(&(new_pt.0 as usize))
+                        && (0..height).contains(&(new_pt.1 as usize))
                     {
-                        let new_pt = (a.0 + offset.0, a.1 + offset.1);
                         vec.push(new_pt);
+                        new_pt = (new_pt.0 + offset.0, new_pt.1 + offset.1);
                     }
-                    vec
+                    Some(vec)
                 })
         })
+        .flatten()
         .sorted()
         .dedup()
         .count()
@@ -102,7 +104,7 @@ pub fn part2(input: &str) -> usize {
 pub fn run() {
     let input = fs::read_to_string("./inputs/day8.txt").unwrap();
     println!("PART 1: {}", part1(&input));
-    // println!("PART 2: {}", part2(&input));
+    println!("PART 2: {}", part2(&input));
 }
 
 #[cfg(test)]
@@ -126,6 +128,6 @@ mod test {
 ............";
 
         assert_eq!(part1(input), 14);
-        // assert_eq!(part2(input), 11387);
+        assert_eq!(part2(input), 34);
     }
 }
