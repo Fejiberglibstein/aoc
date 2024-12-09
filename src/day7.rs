@@ -41,10 +41,10 @@ pub fn part1(input: &str) -> usize {
             (0..nums.len())
                 .map(|_| ops.iter())
                 .multi_cartesian_product()
-                .any(|prod| {
+                .any(|ops| {
                     *ex == nums
                         .iter()
-                        .zip(prod)
+                        .zip(ops)
                         .fold(first, |a, (num, op)| op.do_op(a, *num))
                 })
                 .then_some(*ex as usize)
@@ -63,10 +63,10 @@ pub fn part2(input: &str) -> usize {
             (0..nums.len())
                 .map(|_| ops.iter())
                 .multi_cartesian_product()
-                .any(|prod| {
+                .any(|ops| {
                     *ex == nums
                         .iter()
-                        .zip(prod)
+                        .zip(ops)
                         .fold(first, |a, (num, op)| op.do_op(a, *num))
                 })
                 .then_some(*ex as usize)
